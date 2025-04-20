@@ -61,7 +61,6 @@
     "fs": "latest",
     "path": "latest",
     "@vercel/blob": "latest",
-    "resend": "latest",
     "@ai-sdk/xai": "latest",
     "ai": "latest"
   },

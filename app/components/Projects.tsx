@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { ExternalLink, BarChart2, GamepadIcon, BotIcon as Robot, Calculator } from "lucide-react"
+import { ExternalLink, BarChart2, GamepadIcon, BotIcon as Robot, Calculator, Code } from "lucide-react"
 
 export default function Projects() {
   const projects = [
@@ -14,6 +14,7 @@ export default function Projects() {
       date: "2025",
       icon: Calculator,
       domain: "medicalbill.yoelnk.com",
+      color: "bg-blue-100 text-blue-700",
     },
     {
       title: "YJN Calculator",
@@ -24,6 +25,7 @@ export default function Projects() {
       date: "2025",
       icon: Calculator,
       domain: "yjncalculator.com",
+      color: "bg-green-100 text-green-700",
     },
     {
       title: "Pomelo Educational Robot",
@@ -34,6 +36,7 @@ export default function Projects() {
       date: "2019",
       icon: Robot,
       domain: "hisarcs.github.io/pomelo",
+      color: "bg-purple-100 text-purple-700",
     },
     {
       title: "VC Investments Visualization",
@@ -44,6 +47,7 @@ export default function Projects() {
       date: "2023",
       icon: BarChart2,
       domain: "tuyadr-yoel-nasi0kazado.shinyapps.io",
+      color: "bg-amber-100 text-amber-700",
     },
     {
       title: "Blackjack Strategy Assistant",
@@ -54,6 +58,7 @@ export default function Projects() {
       date: "2023",
       icon: GamepadIcon,
       domain: "blackjackstrategy.yoelnk.com",
+      color: "bg-red-100 text-red-700",
     },
   ]
 
@@ -68,7 +73,7 @@ export default function Projects() {
       <h2 className="text-3xl font-bold mb-6">Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedProjects.map((project, index) => {
-          const Icon = project.icon
+          const Icon = project.icon || Code
           return (
             <Card
               key={index}
@@ -76,27 +81,13 @@ export default function Projects() {
               onClick={() => handleProjectClick(project.url)}
             >
               <div className="relative w-full h-48 overflow-hidden">
-                {/* Browser-like frame for website preview */}
-                <div className="absolute inset-0 flex flex-col border border-gray-200 rounded-t-lg bg-white">
-                  {/* Browser header */}
-                  <div className="h-8 bg-gray-100 border-b border-gray-200 flex items-center px-3 rounded-t-lg">
-                    <div className="flex space-x-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    </div>
-                    <div className="mx-auto flex items-center px-3 py-1 rounded-md bg-gray-200 text-xs text-gray-600 max-w-[80%] truncate">
-                      {project.domain}
-                    </div>
-                  </div>
-                  {/* Browser content */}
-                  <div className="flex-1 bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center p-4">
-                    <div className="flex flex-col items-center justify-center text-center">
-                      <Icon className="w-12 h-12 text-gray-400 mb-2" />
-                      <h3 className="text-sm font-medium text-gray-700">{project.title}</h3>
-                      <p className="text-xs text-gray-500 mt-1">Click to visit website</p>
-                    </div>
-                  </div>
+                {/* Project icon display instead of browser frame */}
+                <div
+                  className={`absolute inset-0 flex flex-col items-center justify-center ${project.color || "bg-gray-100"}`}
+                >
+                  <Icon className="w-16 h-16 mb-2" />
+                  <h3 className="text-lg font-medium">{project.title}</h3>
+                  <p className="text-sm mt-1 opacity-80">{project.domain}</p>
                 </div>
               </div>
               <CardHeader>

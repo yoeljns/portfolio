@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { useState } from "react"
 import { Modal } from "./Modal"
 import { Button } from "@/components/ui/button"
-import { Youtube } from "lucide-react"
+import { Youtube, Building, School } from "lucide-react"
 
 const leadershipExperiences = [
   {
@@ -19,7 +19,8 @@ const leadershipExperiences = [
       "Maximizing AI for Content Creation: Train AI tools with your unique knowledge, avoid generic language.",
     ],
     videoUrl: "https://www.youtube.com/watch?v=efhPCVv1h7U&ab_channel=YoelNasiKazado",
-    thumbnailUrl: `https://img.youtube.com/vi/efhPCVv1h7U/0.jpg`,
+    // Using a more reliable YouTube thumbnail URL format
+    thumbnailUrl: "https://i.ytimg.com/vi/efhPCVv1h7U/hqdefault.jpg",
   },
   {
     title: "Gener8tor CS Nest & Ramp100 Member",
@@ -31,6 +32,7 @@ const leadershipExperiences = [
       "Received mentorship from founders and professors on the entrepreneurial process, including fundraising.",
       "Engaged in networking events and workshops to enhance entrepreneurial skills and knowledge",
     ],
+    icon: School,
   },
   {
     title: "Board Member",
@@ -41,6 +43,7 @@ const leadershipExperiences = [
       "Worked on fundraising initiatives to support association activities",
       "Organized events showcasing Turkish culture to promote cross-cultural understanding",
     ],
+    icon: Building,
   },
   {
     title: "Event Manager/Mentor",
@@ -51,52 +54,62 @@ const leadershipExperiences = [
       "Demonstrated strong organizational skills in planning and executing events",
       "Mentored students in various educational initiatives, fostering their growth and development",
     ],
+    icon: School,
   },
 ]
 
 export default function LeadershipInvolvement() {
   const [selectedExperience, setSelectedExperience] = useState<(typeof leadershipExperiences)[0] | null>(null)
+  const [imageError, setImageError] = useState<Record<string, boolean>>({})
 
   const handleExperienceClick = (exp: (typeof leadershipExperiences)[0]) => {
     setSelectedExperience(exp)
+  }
+
+  const handleImageError = (index: number) => {
+    setImageError((prev) => ({ ...prev, [index]: true }))
   }
 
   return (
     <section id="leadership-involvement" className="py-10">
       <h2 className="text-3xl font-bold mb-6">Leadership & Involvement</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {leadershipExperiences.map((exp, index) => (
-          <Card
-            key={index}
-            className="cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
-            onClick={() => handleExperienceClick(exp)}
-          >
-            <CardHeader className="p-0">
-              {exp.thumbnailUrl ? (
-                <div className="relative w-full h-40">
-                  <Image
-                    src={exp.thumbnailUrl || "/placeholder.svg"}
-                    alt={`${exp.title} thumbnail`}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Youtube className="w-12 h-12 text-white opacity-80" />
+        {leadershipExperiences.map((exp, index) => {
+          const Icon = exp.icon || Building
+          return (
+            <Card
+              key={index}
+              className="cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
+              onClick={() => handleExperienceClick(exp)}
+            >
+              <CardHeader className="p-0">
+                {exp.thumbnailUrl && !imageError[index] ? (
+                  <div className="relative w-full h-40">
+                    <Image
+                      src={exp.thumbnailUrl || "/placeholder.svg"}
+                      alt={`${exp.title} thumbnail`}
+                      fill
+                      className="object-cover"
+                      onError={() => handleImageError(index)}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Youtube className="w-12 h-12 text-white opacity-80" />
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="bg-gray-200 h-40 flex items-center justify-center">
-                  <span className="text-gray-500 text-lg">{exp.organization}</span>
-                </div>
-              )}
-            </CardHeader>
-            <CardContent className="p-4">
-              <CardTitle className="text-lg mb-2">{exp.title}</CardTitle>
-              <p className="text-sm text-muted-foreground">{exp.organization}</p>
-              <p className="text-xs text-muted-foreground mt-1">{exp.date}</p>
-            </CardContent>
-          </Card>
-        ))}
+                ) : (
+                  <div className="bg-gray-200 h-40 flex items-center justify-center">
+                    <Icon className="w-12 h-12 text-gray-400" />
+                  </div>
+                )}
+              </CardHeader>
+              <CardContent className="p-4">
+                <CardTitle className="text-lg mb-2">{exp.title}</CardTitle>
+                <p className="text-sm text-muted-foreground">{exp.organization}</p>
+                <p className="text-xs text-muted-foreground mt-1">{exp.date}</p>
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
       <Modal isOpen={!!selectedExperience} onClose={() => setSelectedExperience(null)}>
         {selectedExperience && (
