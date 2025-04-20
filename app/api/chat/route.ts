@@ -72,7 +72,7 @@ Interests: Tennis, Snowboarding, Running, Chess, LLM fine-tuning, psychology, pa
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json()
+    const { message } = await req.json()
 
     // System prompt to constrain the AI to only talk about Yoel
     const systemPrompt = `
@@ -85,20 +85,10 @@ export async function POST(req: Request) {
       ${resumeContext}
     `
 
-    // Format the conversation history for the AI
-    const formattedMessages = messages
-      .map((msg: any) => {
-        if (msg.role === "user") {
-          return msg.content
-        }
-        return ""
-      })
-      .join("\n")
-
-    // Generate response using xAI
+    // Generate response using xAI with just the current message
     const { text } = await generateText({
       model: xai("grok-3-beta"),
-      prompt: formattedMessages,
+      prompt: message, // Just use the current message
       system: systemPrompt,
       maxTokens: 500,
     })

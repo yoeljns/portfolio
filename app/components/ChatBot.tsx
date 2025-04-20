@@ -102,7 +102,8 @@ export default function ChatBot() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage],
+          // Only send the latest message, not the entire conversation history
+          message: userMessage.content,
         }),
       })
 
